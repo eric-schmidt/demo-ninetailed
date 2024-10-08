@@ -10,6 +10,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 6. Configure a Content Preview within Contentful with the following URL: `http://localhost:3000/api/draft?secret=[ADD CONTENTFUL_PREVIEW_SECRET HERE]&type=page&slug={entry.fields.slug}`
 7. Create a custom Webhook in Contentful that fires on Entry `Create`, `Archive`, `Unarchive`, `Publish`, `Unpublish`, and `Delete`, pointing to the revalidation endpoint with your secret key added: `/api/revalidate?secret=[ADD CONTENTFUL_REVALIDATE_SECRET HERE]`. NOTE: If running this locally, Contentful cannot post a Webhook to `localhost`, so you will need to use ngrok to publicly serve the endpoint (e.g. `ngrok http 3000`).
 8. Assuming you have already installed the [Contentful CLI](https://www.contentful.com/developers/docs/tutorials/cli/installation/), import the baseline content model via the following command: `contentful space import --space-id <YOUR SPACE ID> --environment-id [YOUR ENVIRONMENT ID] --content-file content-model.json`.
+9. If you haven't already, head over to [https://app.ninetailed.io](https://app.ninetailed.io) and create your Ninetailed account.
+10. Within your Contentful Space, head over to the App Marketplace and install the Ninetailed app, following the steps to authenticatem, connect Ninetailed to Contentful, and configure a content source. NOTE: You will only want to enabled Ninetailed for `💎 Duplex` and `💎 Hero Banner component` for now.
 
 ## Getting Started
 
