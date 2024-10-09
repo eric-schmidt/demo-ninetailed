@@ -11,6 +11,9 @@
   "dependencies": {
     "@contentful/live-preview": "^4.5.6",
     "@contentful/rich-text-react-renderer": "^15.18.0",
+    "@ninetailed/experience.js-plugin-preview": "^7.8.1",
+    "@ninetailed/experience.js-react": "^7.8.1",
+    "@ninetailed/experience.js-utils-contentful": "^7.8.1",
     "autoprefixer": "10.4.15",
     "chalk": "^5.3.0",
     "contentful": "^10.5.1",

@@ -14,7 +14,7 @@ const landingPage = async ({ params }) => {
     preview: isEnabled,
     contentType: "page",
     slug: params.slug,
-    includeDepth: 1,
+    includeDepth: 5,
   });
 
   if (landingPages.length === 0) {
@@ -26,10 +26,7 @@ const landingPage = async ({ params }) => {
       {landingPages &&
         landingPages.map((landingPage) =>
           landingPage.fields.topSection?.map((entry) => (
-            <ComponentResolver
-              key={entry.sys.contentType.sys.id}
-              entry={entry}
-            />
+            <ComponentResolver key={entry.sys.id} entry={entry} />
           ))
         )}
     </>

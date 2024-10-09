@@ -1,5 +1,10 @@
-import resolveResponse from "contentful-resolve-response";
+import { createClient } from "contentful";
+import { unstable_cache } from "next/cache";
 import safeJsonStringify from "safe-json-stringify";
+import {
+  AudienceMapper,
+  ExperienceMapper,
+} from "@ninetailed/experience.js-utils-contentful";
 
 export const getEntryById = async ({ entryId }) => {
   const res = await fetch(
@@ -37,35 +42,57 @@ export const getLinksToEntryById = async ({ entryId }) => {
   return await res.json();
 };
 
-export const getEntriesByType = async ({ preview = false, contentType }) => {
-  // Determine whether to use the preview or delivery domain + API key.
-  const domain = preview ? "preview.contentful.com" : "cdn.contentful.com";
-  const apiKey = preview
-    ? process.env.CONTENTFUL_PREVIEW_KEY
-    : process.env.CONTENTFUL_DELIVERY_KEY;
-
-  const res = await fetch(
-    `https://${domain}/spaces/${process.env.CONTENTFUL_SPACE_ID}/environments/${process.env.CONTENTFUL_ENV_ID}/entries?content_type=${contentType}`,
-    {
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-      },
-    }
-  );
-
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
-  }
-
-  return await res.json();
-};
-
 export const getEntriesBySlug = async ({
   preview = false,
   contentType,
   slug,
   includeDepth = 10,
+}) => {
+  // Define a cached function so that we can revalidate when content is updated.
+  const getCachedEntries = unstable_cache(
+    async () => {
+      // Determine whether to use the preview or delivery domain + API key.
+      const domain = preview ? "preview.contentful.com" : "cdn.contentful.com";
+      const apiKey = preview
+        ? process.env.CONTENTFUL_PREVIEW_KEY
+        : process.env.CONTENTFUL_DELIVERY_KEY;
+
+      const client = createClient({
+        space: process.env.CONTENTFUL_SPACE_ID,
+        accessToken: apiKey,
+        host: domain,
+      });
+
+      try {
+        const response = await client.getEntries({
+          content_type: contentType,
+          include: includeDepth,
+          "fields.slug": slug,
+        });
+        // Prevent circular reference errors.
+        return JSON.parse(safeJsonStringify(response.items));
+      } catch (error) {
+        console.error("Error fetching entries from Contentful:", error);
+        throw error;
+      }
+    },
+    [`entries-${contentType}-${slug}`],
+    { tags: [slug] }
+  );
+
+  try {
+    const cachedData = await getCachedEntries();
+    return cachedData;
+  } catch (error) {
+    console.error("Error retrieving cached entries:", error);
+    throw error;
+  }
+};
+
+export const getEntriesByType = async ({
+  preview = false,
+  contentType,
+  includeDepth = 0,
 }) => {
   // Determine whether to use the preview or delivery domain + API key.
   const domain = preview ? "preview.contentful.com" : "cdn.contentful.com";
@@ -73,45 +100,42 @@ export const getEntriesBySlug = async ({
     ? process.env.CONTENTFUL_PREVIEW_KEY
     : process.env.CONTENTFUL_DELIVERY_KEY;
 
-  const res = await fetch(
-    `https://${domain}/spaces/${process.env.CONTENTFUL_SPACE_ID}/environments/${process.env.CONTENTFUL_ENV_ID}/entries?content_type=${contentType}&fields.slug=${slug}&include=${includeDepth}`,
-    {
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-      },
-      // Add cache tags that we can later invalidate via Contentful webhook.
-      next: { tags: [slug] },
-    }
-  );
+  const client = createClient({
+    space: process.env.CONTENTFUL_SPACE_ID,
+    accessToken: apiKey,
+    host: domain,
+  });
 
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+  try {
+    const response = await client.getEntries({
+      content_type: contentType,
+      include: includeDepth,
+    });
+    return response.items;
+  } catch (error) {
+    console.error("Error fetching entries from Contentful:", error);
+    throw error;
   }
-
-  const jsonData = await res.json();
-
-  // Uses https://github.com/contentful/contentful-resolve-response to automatically resolve references.
-  const resolvedJsonData = resolveResponse(jsonData);
-
-  // Uses https://github.com/debitoor/safe-json-stringify to prevent circular reference errors.
-  const safeJsonData = JSON.parse(safeJsonStringify(resolvedJsonData));
-
-  return safeJsonData;
 };
 
-export const getGraphQLResponse = async ({ query }) => {
-  const response = await fetch(
-    `https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.CONTENTFUL_PREVIEW_KEY}`,
-      },
-      body: JSON.stringify({ query }),
-    }
-  );
+export const getAllMappedAudiences = async () => {
+  const entries = await getEntriesByType({
+    preview: true,
+    contentType: "nt_audience",
+    includeDepth: 1,
+  });
+  return entries
+    .filter(AudienceMapper.isAudienceEntry)
+    .map(AudienceMapper.mapAudience);
+};
 
-  return await response.json();
+export const getAllMappedExperiences = async () => {
+  const entries = await getEntriesByType({
+    preview: true,
+    contentType: "nt_experience",
+    includeDepth: 1,
+  });
+  return entries
+    .filter(ExperienceMapper.isExperienceEntry)
+    .map(ExperienceMapper.mapExperience);
 };
