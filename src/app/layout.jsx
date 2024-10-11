@@ -12,8 +12,8 @@ export const metadata = {
 };
 
 const RootLayout = async ({ children }) => {
-  // TODO: How can we pass this down to all components instead of having to check in multiple levels?
-  // TODO: Use Context or custom React hooks like Aubrie did with her "global context" stuff?
+  // TODO: How can we pass Draft Mode down to all components instead of having to check in multiple levels?
+  // TODO: Maybe `useContext` or custom React hooks like Aubrie did with her "global context" stuff?
   const { isEnabled } = draftMode();
 
   return (

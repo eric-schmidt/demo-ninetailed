@@ -27,6 +27,7 @@ export const ComponentResolver = ({ entry }) => {
       component={Component}
       {...entry}
       experiences={experiences}
+      // TODO: Figure out why this isn't working and instead stays in a loading state.
       // loadingComponent={() => <div>Loading...</div>}
     />
   );
