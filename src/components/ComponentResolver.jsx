@@ -28,7 +28,8 @@ export const ComponentResolver = ({ entry }) => {
       {...entry}
       experiences={experiences}
       // TODO: Figure out why this isn't working and instead stays in a loading state.
-      // loadingComponent={() => <div>Loading...</div>}
+      // Could this be related to why we don't see personalized content showing up?
+      loadingComponent={() => <div>Loading...</div>}
     />
   );
 };
