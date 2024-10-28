@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { draftMode } from "next/headers";
 import { Providers } from "./providers";
 import { getAllMappedAudiences, getAllMappedExperiences } from "../lib/client";
+import { TrackPage } from "../components/events/TrackPage";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ const RootLayout = async ({ children }) => {
               audiences={(await getAllMappedAudiences()) || []}
               experiences={(await getAllMappedExperiences()) || []}
             >
+              <TrackPage />
               {children}
             </Providers>
           </div>
