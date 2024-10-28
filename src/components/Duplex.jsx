@@ -9,7 +9,7 @@ import {
 import Image from "next/image";
 import { imageLoader } from "../lib/imageLoader";
 
-export const Duplex = ({ ...entry }) => {
+export const Duplex = (entry) => {
   const { fields } = useContentfulLiveUpdates(entry);
   const inspectorProps = useContentfulInspectorMode({
     entryId: entry?.sys.id,

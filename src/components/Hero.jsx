@@ -9,13 +9,14 @@ import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import Image from "next/image";
 import { imageLoader } from "@/src/lib/imageLoader";
 
-export const Hero = ({ ...entry }) => {
+export const Hero = (entry) => {
   const { fields } = useContentfulLiveUpdates(entry);
   const inspectorProps = useContentfulInspectorMode({
     entryId: entry?.sys.id,
   });
 
   // TODO: How can we abstract this to make it more reusable from component to component? Mapping file of some sort?
+  // TODO: The above is likely moot now that we can use Content Source Maps to make this way easier.
   let headingFieldId, imageFieldId;
   switch (entry.sys.contentType.sys.id) {
     case "componentHeroBanner":
