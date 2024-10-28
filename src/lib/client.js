@@ -92,7 +92,7 @@ export const getEntriesBySlug = async ({
 export const getEntriesByType = async ({
   preview = false,
   contentType,
-  includeDepth = 0,
+  includeDepth = 10,
 }) => {
   // Determine whether to use the preview or delivery domain + API key.
   const domain = preview ? "preview.contentful.com" : "cdn.contentful.com";
@@ -122,7 +122,7 @@ export const getAllMappedAudiences = async () => {
   const entries = await getEntriesByType({
     preview: true,
     contentType: "nt_audience",
-    includeDepth: 1,
+    includeDepth: 10,
   });
   return entries
     .filter(AudienceMapper.isAudienceEntry)
@@ -133,7 +133,7 @@ export const getAllMappedExperiences = async () => {
   const entries = await getEntriesByType({
     preview: true,
     contentType: "nt_experience",
-    includeDepth: 1,
+    includeDepth: 10,
   });
   return entries
     .filter(ExperienceMapper.isExperienceEntry)
