@@ -13,8 +13,8 @@ export const Providers = ({
   experiences,
 }) => (
   <NinetailedProvider
-    clientId={process.env.NINETAILED_API_KEY}
-    environment={process.env.NINETAILED_ENVIRONMENT_ID}
+    clientId={process.env.NEXT_PUBLIC_NINETAILED_API_KEY}
+    environment={process.env.NEXT_PUBLIC_NINETAILED_ENVIRONMENT_ID}
     plugins={[
       new NinetailedPreviewPlugin({
         audiences: audiences,
