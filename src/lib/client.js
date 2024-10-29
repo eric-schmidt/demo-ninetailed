@@ -51,7 +51,7 @@ export const getEntriesBySlug = async ({
   // Define a cached function so that we can revalidate when content is updated.
   const getCachedEntries = unstable_cache(
     async () => {
-      // Determine whether to use the preview or delivery domain + API key.
+      // If `preview` is true, use the Preview domain + API key, otherwise use Delivery.
       const domain = preview ? "preview.contentful.com" : "cdn.contentful.com";
       const apiKey = preview
         ? process.env.CONTENTFUL_PREVIEW_KEY
@@ -61,6 +61,9 @@ export const getEntriesBySlug = async ({
         space: process.env.CONTENTFUL_SPACE_ID,
         accessToken: apiKey,
         host: domain,
+        // Content Source Maps prevent the need for manually tagging components for
+        // Live Preview Inspector Mode, but these are only available on the Preview API.
+        includeContentSourceMaps: preview,
       });
 
       try {
