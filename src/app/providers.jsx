@@ -5,6 +5,7 @@ import { ContentfulLivePreviewProvider } from "@contentful/live-preview/react";
 // @ninetailed/experience.js-next only works with Pages router, so we use the React version instead.
 import { NinetailedProvider } from "@ninetailed/experience.js-react";
 import { NinetailedPreviewPlugin } from "@ninetailed/experience.js-plugin-preview";
+import { NinetailedInsightsPlugin } from "@ninetailed/experience.js-plugin-insights";
 
 export const Providers = ({
   children,
@@ -16,6 +17,7 @@ export const Providers = ({
     clientId={process.env.NEXT_PUBLIC_NINETAILED_API_KEY}
     environment={process.env.NEXT_PUBLIC_NINETAILED_ENVIRONMENT_ID}
     plugins={[
+      new NinetailedInsightsPlugin(),
       new NinetailedPreviewPlugin({
         audiences: audiences,
         experiences: experiences,
