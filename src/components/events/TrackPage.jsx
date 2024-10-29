@@ -10,5 +10,5 @@ export const TrackPage = () => {
 
   useEffect(() => {
     page();
-  }, [pathname]);
+  }, [page, pathname]);
 };
