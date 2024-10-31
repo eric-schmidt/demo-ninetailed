@@ -25,7 +25,7 @@ const landingPage = async ({ params }) => {
     <>
       {landingPages &&
         landingPages.map((landingPage) =>
-          landingPage.fields.topSection?.map((entry) => (
+          landingPage.fields.content?.map((entry) => (
             <ComponentResolver key={entry.sys.id} entry={entry} />
           ))
         )}
