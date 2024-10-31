@@ -7,30 +7,26 @@ import Image from "next/image";
 import { imageLoader } from "../lib/imageLoader";
 
 export const Duplex = (entry) => {
-  const { fields: sourceMappedFields } = useContentfulLiveUpdates(entry);
+  const { fields: liveUpdateFields } = useContentfulLiveUpdates(entry);
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 gap-12 p-6 mt-12">
       <div className="text-white flex flex-col justify-center">
-        <h2 className="text-2xl mb-4">{sourceMappedFields.headline || ""}</h2>
+        <h2 className="text-2xl mb-4">{liveUpdateFields.headline || ""}</h2>
 
-        <div>
-          {documentToReactComponents(sourceMappedFields.bodyText || "")}
-        </div>
+        <div>{documentToReactComponents(liveUpdateFields.bodyText || "")}</div>
       </div>
 
       <Image
         loader={imageLoader}
-        width={sourceMappedFields.image.fields.file.details.image.width}
-        height={sourceMappedFields.image.fields.file.details.image.height}
+        width={liveUpdateFields.image.fields.file.details.image.width}
+        height={liveUpdateFields.image.fields.file.details.image.height}
         sizes="(min-width: 1280px) 416px, (min-width: 780px) calc(45.42vw - 156px), calc(100vw - 240px)"
-        src={`https:${sourceMappedFields.image?.fields.file.url}` || ""}
+        src={`https:${liveUpdateFields.image?.fields.file.url}` || ""}
         className={`order-first ${
-          sourceMappedFields.containerLayout
-            ? "md:order-first"
-            : "md:order-last"
+          liveUpdateFields.containerLayout ? "md:order-first" : "md:order-last"
         }`}
-        alt={sourceMappedFields.image?.fields.title}
+        alt={liveUpdateFields.image?.fields.title}
       />
     </section>
   );

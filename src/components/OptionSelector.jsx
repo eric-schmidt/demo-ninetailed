@@ -2,18 +2,20 @@
 
 import React, { useEffect, useState } from "react";
 import { useNinetailed, useProfile } from "@ninetailed/experience.js-react";
+import { useContentfulLiveUpdates } from "@contentful/live-preview/react";
 
 const OptionSelector = (entry) => {
   const { page, track, identify } = useNinetailed();
   const { profile } = useProfile();
   const [selectedOption, setSelectedOption] = useState(null);
+  const { fields: liveUpdateFields } = useContentfulLiveUpdates(entry);
 
   console.log("PROFILE", profile);
 
   const handleSelectOption = (option) => {
     // Remove any non-printable characters  (added by Live Preview Content Source Maps)
     // from the trait key, as this will disrupt the key we use to add the trait to the profile.
-    const cleanKey = entry.fields.trait.replace(/[^\P{C}\t\n\r]+/gu, "");
+    const cleanKey = liveUpdateFields.trait.replace(/[^\P{C}\t\n\r]+/gu, "");
 
     setSelectedOption(option);
     // Update Ninetailed profile trait with selected option.
@@ -23,14 +25,14 @@ const OptionSelector = (entry) => {
 
   return (
     <div className="w-full mt-16 p-16 text-center border-2 rounded bg-gray-900">
-      <h2 className="text-xl">{entry.fields.headline || ""}</h2>
+      <h2 className="text-xl">{liveUpdateFields.headline || ""}</h2>
       <div className="mt-8">
-        {entry.fields.options.map((option) => (
+        {liveUpdateFields.options.map((option) => (
           <React.Fragment key={option.key}>
             <input
               type="radio"
               id={option.key}
-              name={entry.fields.internalName}
+              name={liveUpdateFields.internalName}
               value={option.value}
               checked={selectedOption === option.key}
               onChange={() => handleSelectOption(option.key)}

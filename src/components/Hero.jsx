@@ -7,7 +7,7 @@ import Image from "next/image";
 import { imageLoader } from "@/src/lib/imageLoader";
 
 export const Hero = (entry) => {
-  const { fields: sourceMappedFields } = useContentfulLiveUpdates(entry);
+  const { fields: liveUpdateFields } = useContentfulLiveUpdates(entry);
 
   // TODO: How can we abstract this to make it more reusable from component to component? Mapping file of some sort?
   let headingFieldId, imageFieldId;
@@ -27,22 +27,22 @@ export const Hero = (entry) => {
     <section className="container relative">
       <div className="relative z-10 md:max-w-lg px-10 py-20 md:px-10 md:py-40">
         <h1 className="drop-shadow-lg mb-4">
-          {sourceMappedFields[headingFieldId] || ""}
+          {liveUpdateFields[headingFieldId] || ""}
         </h1>
 
-        {sourceMappedFields.bodyText && (
+        {liveUpdateFields.bodyText && (
           <div className="text-md lg:text-lg mb-4">
-            {documentToReactComponents(sourceMappedFields.bodyText || "")}
+            {documentToReactComponents(liveUpdateFields.bodyText || "")}
           </div>
         )}
 
-        {sourceMappedFields.ctaText && (
+        {liveUpdateFields.ctaText && (
           // TODO: Add <Link> element instead <a> tag.
           <a
             className="btn p-2 w-fit inline-block bg-black"
-            href={sourceMappedFields.targetPage?.fields?.slug || "/"}
+            href={liveUpdateFields.targetPage?.fields?.slug || "/"}
           >
-            {sourceMappedFields.ctaText || ""}
+            {liveUpdateFields.ctaText || ""}
           </a>
         )}
       </div>
@@ -53,8 +53,8 @@ export const Hero = (entry) => {
         priority={true} // prevent Largest Contentful Paint issues
         fill={true} // add object fit w/o height/width requirement
         sizes="(min-width: 1280px) 1024px, (min-width: 780px) calc(90.83vw - 121px), calc(100vw - 96px)"
-        src={`https:${sourceMappedFields[imageFieldId]?.fields.file.url}` || ""}
-        alt={sourceMappedFields[imageFieldId]?.fields.title}
+        src={`https:${liveUpdateFields[imageFieldId]?.fields.file.url}` || ""}
+        alt={liveUpdateFields[imageFieldId]?.fields.title}
       />
     </section>
   );
