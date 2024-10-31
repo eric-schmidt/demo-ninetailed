@@ -8,7 +8,7 @@ import {
 
 export const getEntryById = async ({ entryId }) => {
   const res = await fetch(
-    `https://cdn.contentful.com/spaces/${process.env.CONTENTFUL_SPACE_ID}/environments/${process.env.CONTENTFUL_ENV_ID}/entries/${entryId}`,
+    `https://cdn.contentful.com/spaces/${process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID}/environments/${process.env.NEXT_PUBLIC_CONTENTFUL_ENV_ID}/entries/${entryId}`,
     {
       headers: {
         Authorization: `Bearer ${process.env.CONTENTFUL_DELIVERY_KEY}`,
@@ -26,7 +26,7 @@ export const getEntryById = async ({ entryId }) => {
 
 export const getLinksToEntryById = async ({ entryId }) => {
   const res = await fetch(
-    `https://cdn.contentful.com/spaces/${process.env.CONTENTFUL_SPACE_ID}/environments/${process.env.CONTENTFUL_ENV_ID}/entries?links_to_entry=${entryId}`,
+    `https://cdn.contentful.com/spaces/${process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID}/environments/${process.env.NEXT_PUBLIC_CONTENTFUL_ENV_ID}/entries?links_to_entry=${entryId}`,
     {
       headers: {
         Authorization: `Bearer ${process.env.CONTENTFUL_DELIVERY_KEY}`,
@@ -58,7 +58,7 @@ export const getEntriesBySlug = async ({
         : process.env.CONTENTFUL_DELIVERY_KEY;
 
       const client = createClient({
-        space: process.env.CONTENTFUL_SPACE_ID,
+        space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID,
         accessToken: apiKey,
         host: domain,
         // Content Source Maps prevent the need for manually tagging components for
@@ -104,7 +104,7 @@ export const getEntriesByType = async ({
     : process.env.CONTENTFUL_DELIVERY_KEY;
 
   const client = createClient({
-    space: process.env.CONTENTFUL_SPACE_ID,
+    space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID,
     accessToken: apiKey,
     host: domain,
   });
