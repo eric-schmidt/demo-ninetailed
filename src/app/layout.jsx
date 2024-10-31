@@ -15,7 +15,9 @@ export const metadata = {
 const RootLayout = async ({ children }) => {
   // TODO: How can we pass Draft Mode down to all components instead of having to check in multiple levels?
   // TODO: Maybe `useContext` or custom React hooks like Aubrie did with her "global context" stuff?
-  const { isEnabled } = draftMode();
+  let { isEnabled } = draftMode();
+  // TODO: Can't set the cookie on localhost with Live Preview, so preview can be forced to `true` here.
+  // isEnabled = true;
 
   return (
     <html lang="en">
