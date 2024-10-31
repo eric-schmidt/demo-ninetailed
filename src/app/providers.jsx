@@ -51,6 +51,7 @@ export const Providers = ({
         locale="en-US"
         enableInspectorMode={true || draftModeEnabled}
         enableLiveUpdates={true || draftModeEnabled}
+        // debugMode={true}
       >
         {children}
       </ContentfulLivePreviewProvider>
