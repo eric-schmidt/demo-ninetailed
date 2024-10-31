@@ -12,6 +12,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 8. Assuming you have already installed the [Contentful CLI](https://www.contentful.com/developers/docs/tutorials/cli/installation/), import the baseline content model via the following command: `contentful space import --space-id <YOUR SPACE ID> --environment-id [YOUR ENVIRONMENT ID] --content-file content-model.json`.
 9. If you haven't already, head over to [https://app.ninetailed.io](https://app.ninetailed.io) and create your Ninetailed account.
 10. Within your Contentful Space, head over to the App Marketplace and install the Ninetailed app, following the steps to authenticatem, connect Ninetailed to Contentful, and configure a content source. NOTE: You will only want to enabled Ninetailed for `💎 Duplex` and `💎 Hero Banner component` for now.
+11. Additionally, you will also need to install the `Repeater` app from the App Marketplace, as it is required to demonstrate the dynamic profile trait adjustments using the `Option Selector` component.
 
 ## Getting Started
 

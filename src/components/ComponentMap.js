@@ -3,6 +3,9 @@ import dynamic from "next/dynamic";
 
 // TODO: Add additional mapping for more component types.
 export const ComponentMap = {
-  componentHeroBanner: dynamic(() => import("@/src/components/Hero")),
   componentDuplex: dynamic(() => import("@/src/components/Duplex")),
+  componentHeroBanner: dynamic(() => import("@/src/components/Hero")),
+  componentOptionSelector: dynamic(() =>
+    import("@/src/components/OptionSelector")
+  ),
 };
