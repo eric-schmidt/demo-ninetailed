@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useNinetailed } from "@ninetailed/experience.js-react";
 
-export const TrackPage = () => {
+const TrackPageInner = () => {
   const pathname = usePathname();
   const { identify, page } = useNinetailed();
   const personalizationParams = ["preferredAnimal"];
@@ -26,3 +26,12 @@ export const TrackPage = () => {
 
   return null;
 };
+
+const TrackPage = () => (
+  // @see: https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
+  <Suspense>
+    <TrackPageInner />
+  </Suspense>
+);
+
+export default TrackPage;
