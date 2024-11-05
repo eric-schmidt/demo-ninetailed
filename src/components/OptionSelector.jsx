@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNinetailed, useProfile } from "@ninetailed/experience.js-react";
 import { useContentfulLiveUpdates } from "@contentful/live-preview/react";
 
@@ -11,7 +11,7 @@ const OptionSelector = (entry) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const { fields: liveUpdateFields } = useContentfulLiveUpdates(entry);
 
-  console.log("PROFILE", profile);
+  // console.log("PROFILE", profile);
 
   const handleSelectOption = (option) => {
     // Remove any non-printable characters (added by Live Preview Content Source Maps)
