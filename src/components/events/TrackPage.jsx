@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, Suspense } from "react";
+import { useEffect, useMemo } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useNinetailed } from "@ninetailed/experience.js-react";
 
-const TrackPageInner = () => {
+export const TrackPage = () => {
   const pathname = usePathname();
   const { identify, page } = useNinetailed();
-  const personalizationParams = ["preferredAnimal"];
+  const personalizationParams = useMemo(() => ["preferredAnimal"], []);
   let searchParams = useSearchParams();
   searchParams = Object.fromEntries(searchParams.entries());
 
@@ -22,16 +22,7 @@ const TrackPageInner = () => {
       });
     // Additionally, log a page view to Ninetailed.
     page();
-  }, [page, pathname]);
+  }, [identify, page, pathname, personalizationParams, searchParams]);
 
   return null;
 };
-
-const TrackPage = () => (
-  // @see: https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
-  <Suspense>
-    <TrackPageInner />
-  </Suspense>
-);
-
-export default TrackPage;

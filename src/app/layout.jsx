@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { Suspense } from "react";
 import { draftMode } from "next/headers";
 import { Providers } from "./providers";
 import {
@@ -38,8 +39,13 @@ const RootLayout = async ({ children }) => {
               audiences={(await getAllMappedAudiences()) || []}
               experiences={(await getAllMappedExperiences()) || []}
             >
-              {/* Add page tracking event in order to kickoff personalizations. */}
-              <TrackPage />
+              {/* Add page tracking event in order to kickoff personalizations. This
+              is wrapped in a Suspense component to prevent the entire tree from
+              being client rendered.
+              @see: https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
+              <Suspense>
+                <TrackPage />
+              </Suspense>
               {/* Add Banner that renders on all pages to show Merge Tag functionality. */}
               <ComponentResolver
                 key={siteConfigEntry.fields.persistentBanner.sys.id}
