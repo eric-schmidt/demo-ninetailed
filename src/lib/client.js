@@ -44,11 +44,16 @@ export const getLinksToEntryById = async ({ entryId }) => {
 };
 
 // Get an individual entry from Contentful via its ID.
-export const getEntryById = async ({ entryId }) => {
+export const getEntryById = async ({ entryId, includeDepth = 10 }) => {
   const client = getClient({ preview: false });
 
   try {
-    return await client.getEntry(entryId);
+    const response = await client.getEntries({
+      "sys.id": entryId,
+      include: includeDepth,
+    });
+    // Only return the first item since we are querying by ID.
+    return response.items[0];
   } catch (error) {
     console.error("Error fetching entry:", error);
     throw error;

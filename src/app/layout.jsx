@@ -24,7 +24,9 @@ const RootLayout = async ({ children }) => {
   // TODO: Can't set the cookie on localhost with Live Preview, so preview can be forced to `true` here.
   // isEnabled = true;
 
-  const bannerEntry = await getEntryById({ entryId: "4UbU1ybsTeHw8r7tOh7CBO" });
+  const siteConfigEntry = await getEntryById({
+    entryId: "1Q8WgkDuU4s45pyvrandn9",
+  });
 
   return (
     <html lang="en">
@@ -39,7 +41,10 @@ const RootLayout = async ({ children }) => {
               {/* Add page tracking event in order to kickoff personalizations. */}
               <TrackPage />
               {/* Add Banner that renders on all pages to show Merge Tag functionality. */}
-              <ComponentResolver key={bannerEntry.sys.id} entry={bannerEntry} />
+              <ComponentResolver
+                key={siteConfigEntry.fields.persistentBanner.sys.id}
+                entry={siteConfigEntry.fields.persistentBanner}
+              />
               {children}
             </Providers>
           </div>
