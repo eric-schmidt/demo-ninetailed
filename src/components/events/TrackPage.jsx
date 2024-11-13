@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useNinetailed } from "@ninetailed/experience.js-react";
 
 export const TrackPage = () => {
   const pathname = usePathname();
   const { identify, page } = useNinetailed();
   const personalizationParams = useMemo(() => ["preferredAnimal"], []);
-  let searchParams = useSearchParams();
+  const url = new URL(window.location.href);
+  let searchParams = url.searchParams;
   searchParams = Object.fromEntries(searchParams.entries());
 
   useEffect(() => {
