@@ -1,15 +1,14 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { Suspense } from "react";
 import { draftMode } from "next/headers";
-import { Providers } from "./providers";
+import { Providers } from "@/src/app/providers";
 import {
   getAllMappedAudiences,
   getAllMappedExperiences,
   getEntryById,
-} from "../lib/client";
+} from "@/src/lib/client";
 import { ComponentResolver } from "@/src/components/ComponentResolver";
-import { TrackPage } from "../components/events/TrackPage";
+import { TrackPage } from "@/src/components/events/TrackPage";
 
 const inter = Inter({ subsets: ["latin"] });
 
