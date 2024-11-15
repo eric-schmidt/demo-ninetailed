@@ -21,7 +21,7 @@ const RootLayout = async ({ children }) => {
   // TODO: How can we pass Draft Mode down to all components instead of having to check in multiple levels?
   // TODO: Maybe `useContext` or custom React hooks like Aubrie did with her "global context" stuff?
   let { isEnabled } = draftMode();
-  // TODO: Can't set the cookie on localhost with Live Preview, so preview can be forced to `true` here.
+  // Sometimes it is helpful to override Draft Mode when testing.
   // isEnabled = true;
 
   const siteConfigEntry = await getEntryById({
