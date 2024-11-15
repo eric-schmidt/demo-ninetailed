@@ -1,4 +1,4 @@
-import { draftMode } from "next/headers";
+import { cookies, draftMode } from "next/headers";
 import { redirect } from "next/navigation";
 import { getEntriesBySlug } from "@/src/lib/client";
 
@@ -29,6 +29,20 @@ export const GET = async (request) => {
 
   // Enable Draft Mode.
   draftMode().enable();
+
+  // In order for Draft Mode to work within the context of Live Preview and/or Studio,
+  // we need to ensure the cookie has sameSite=None and secure=true.
+  // @see https://www.contentful.com/developers/docs/tutorials/preview/live-preview/#my-page-has-an-authorization-cookie-for-logging-in
+  const draftModeCookie = cookies().get("__prerender_bypass");
+  if (draftModeCookie) {
+    // Set a new cookie with the same value but custom attributes
+    cookies().set("__prerender_bypass", draftModeCookie.value, {
+      secure: true,
+      sameSite: "none",
+      httpOnly: true,
+      path: "/",
+    });
+  }
 
   // Redirect to the path from the fetched entry.
   // We don't redirect to searchParams.slug as that might lead to open redirect vulnerabilities
