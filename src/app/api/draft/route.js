@@ -1,6 +1,6 @@
 import { cookies, draftMode } from "next/headers";
 import { redirect } from "next/navigation";
-import { getEntriesBySlug } from "@/src/lib/client";
+import { getEntriesBySlug } from "@/lib/client";
 
 export const GET = async (request) => {
   // Parse query string parameters

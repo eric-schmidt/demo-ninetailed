@@ -1,4 +1,4 @@
-import { createClient } from "contentful";
+import { createClient, FixedQueryOptions } from "contentful";
 import { unstable_cache } from "next/cache";
 import safeJsonStringify from "safe-json-stringify";
 import {
@@ -7,7 +7,7 @@ import {
 } from "@ninetailed/experience.js-utils-contentful";
 
 // Retrieve a Contentful client with various configured options.
-const getClient = ({ preview = false }) => {
+const getClient = ({ preview = false }: { preview: boolean }) => {
   try {
     // If `preview` is true, use the Preview domain + API key, otherwise use Delivery.
     const domain = preview ? "preview.contentful.com" : "cdn.contentful.com";
@@ -16,8 +16,8 @@ const getClient = ({ preview = false }) => {
       : process.env.CONTENTFUL_DELIVERY_KEY;
 
     return createClient({
-      space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID,
-      accessToken: apiKey,
+      space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID || "",
+      accessToken: apiKey || "",
       host: domain,
       // Content Source Maps prevent the need for manually tagging components for
       // Live Preview Inspector Mode, but these are only available on the Preview API.
@@ -30,7 +30,11 @@ const getClient = ({ preview = false }) => {
 };
 
 // Get all entries from Contentful that are linking to a specifc entry.
-export const getLinksToEntryById = async ({ entryId }) => {
+export const getLinksToEntryById = async ({
+  entryId,
+}: {
+  entryId: FixedQueryOptions["query"];
+}) => {
   const client = getClient({ preview: false });
 
   try {
@@ -44,7 +48,13 @@ export const getLinksToEntryById = async ({ entryId }) => {
 };
 
 // Get an individual entry from Contentful via its ID.
-export const getEntryById = async ({ entryId, includeDepth = 10 }) => {
+export const getEntryById = async ({
+  entryId,
+  includeDepth = 10,
+}: {
+  entryId: FixedQueryOptions["query"];
+  includeDepth?: FixedQueryOptions["include"];
+}) => {
   const client = getClient({ preview: false });
 
   try {
@@ -66,6 +76,11 @@ export const getEntriesBySlug = async ({
   contentType,
   slug,
   includeDepth = 10,
+}: {
+  preview: boolean;
+  contentType: string;
+  slug: string;
+  includeDepth: FixedQueryOptions["include"];
 }) => {
   const client = getClient({ preview });
   // Use the Next.js caching function so that we can revalidate when content is updated.
@@ -101,6 +116,10 @@ export const getEntriesByType = async ({
   preview = false,
   contentType,
   includeDepth = 10,
+}: {
+  preview: boolean;
+  contentType: string;
+  includeDepth: FixedQueryOptions["include"];
 }) => {
   const client = getClient({ preview });
 
@@ -124,9 +143,14 @@ export const getAllMappedAudiences = async () => {
       contentType: "nt_audience",
       includeDepth: 10,
     });
-    return entries
-      .filter(AudienceMapper.isAudienceEntry)
-      .map(AudienceMapper.mapAudience);
+    return (
+      entries
+        // TODO: The built-in types provided by Ninetailed are not compatible with the
+        // current version of the Contentful SDK. This is likely due to `metadata` not
+        // accounting for `concepts` in a similar way that it accounts for `tags`.
+        .filter((entry) => AudienceMapper.isAudienceEntry(entry as any))
+        .map((entry) => AudienceMapper.mapAudience(entry as any))
+    );
   } catch (error) {
     console.error("Error fetching Audiences:", error);
     throw error;
@@ -140,9 +164,14 @@ export const getAllMappedExperiences = async () => {
       contentType: "nt_experience",
       includeDepth: 10,
     });
-    return entries
-      .filter(ExperienceMapper.isExperienceEntry)
-      .map(ExperienceMapper.mapExperience);
+    return (
+      entries
+        // TODO: The built-in types provided by Ninetailed are not compatible with the
+        // current version of the Contentful SDK. This is likely due to `metadata` not
+        // accounting for `concepts` in a similar way that it accounts for `tags`.
+        .filter((entry) => ExperienceMapper.isExperienceEntry(entry as any))
+        .map((entry) => ExperienceMapper.mapExperience(entry as any))
+    );
   } catch (error) {
     console.error("Error fetching Experiences:", error);
     throw error;

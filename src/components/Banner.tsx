@@ -1,21 +1,28 @@
 "use client";
 
 import React from "react";
-import { BLOCKS, INLINES } from "@contentful/rich-text-types";
-import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import { Block, Inline, BLOCKS, INLINES } from "@contentful/rich-text-types";
+import {
+  documentToReactComponents,
+  Options,
+} from "@contentful/rich-text-react-renderer";
 import { MergeTag } from "@ninetailed/experience.js-react";
+import type {
+  TypeComponentBanner,
+  TypeComponentBannerFields,
+} from "@/types/contentful.d.ts/TypeComponentBanner";
 
-export const Banner = (entry) => {
-  const { content } = entry.fields;
+export const Banner: React.FC<TypeComponentBanner> = (entry) => {
+  const { content } = entry.fields as TypeComponentBannerFields;
 
   const options = {
     renderNode: {
-      [BLOCKS.PARAGRAPH]: (node, children) => (
+      [BLOCKS.PARAGRAPH]: (node: Block, children: React.ReactNode) => (
         <p className="text-xl">{children}</p>
       ),
-      [INLINES.EMBEDDED_ENTRY]: (node) => {
+      [INLINES.EMBEDDED_ENTRY]: (node: Inline) => {
         if (node.data.target.sys.contentType.sys.id !== "nt_mergetag") {
-          return;
+          return null;
         }
 
         const { nt_mergetag_id, nt_fallback } = node.data.target.fields;
@@ -31,7 +38,7 @@ export const Banner = (entry) => {
 
   return (
     <div className="absolute top-0 left-0 w-full p-8 bg-gray-900 text-center">
-      {documentToReactComponents(content, options)}
+      {documentToReactComponents(content, options as Options)}
     </div>
   );
 };

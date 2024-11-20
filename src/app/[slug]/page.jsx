@@ -1,7 +1,7 @@
 import React from "react";
 import { draftMode } from "next/headers";
-import { getEntriesBySlug } from "@/src/lib/client";
-import { ComponentResolver } from "@/src/components/ComponentResolver";
+import { getEntriesBySlug } from "@/lib/client";
+import { ComponentResolver } from "@/components/ComponentResolver";
 import { notFound } from "next/navigation";
 
 const LandingPage = async ({ params }) => {

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
-import { getEntryById, getLinksToEntryById } from "../../../lib/client";
+import { getEntryById, getLinksToEntryById } from "@/lib/client";
 
 // E.g. http://localhost:3000/api/revalidate?secret=<secret>
 // BUT this needs to use ngrok to work properly as a Webhook endpoint!!!

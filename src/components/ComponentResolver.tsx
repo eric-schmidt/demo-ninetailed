@@ -2,11 +2,12 @@
 
 import chalk from "chalk";
 import React from "react";
+import { Entry } from "contentful";
 import { Experience } from "@ninetailed/experience.js-react";
 import { ExperienceMapper } from "@ninetailed/experience.js-utils-contentful";
-import { ComponentMap } from "@/src/components/ComponentMap";
+import { ComponentMap } from "@/components/ComponentMap";
 
-export const ComponentResolver = ({ entry }) => {
+export const ComponentResolver: React.FC<{ entry: Entry }> = ({ entry }) => {
   const Component = ComponentMap[entry.sys.contentType.sys.id];
 
   // If there is no component in the mappings, return message.

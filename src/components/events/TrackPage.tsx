@@ -13,13 +13,15 @@ export const TrackPage = () => {
     // For each searchParam that is also a personalizationParam,
     // log it as a trait to the Ninetailed profile.
     const url = new URL(window.location.href);
-    let searchParams = url.searchParams;
-    searchParams = Object.fromEntries(searchParams.entries());
+    const searchParams = url.searchParams;
+    const searchParamsObj: { [key: string]: string } = Object.fromEntries(
+      searchParams.entries()
+    );
 
-    searchParams &&
+    searchParamsObj &&
       personalizationParams.forEach((param) => {
-        if (searchParams[param]) {
-          identify("", { [param]: searchParams[param] });
+        if (searchParamsObj[param]) {
+          identify("", { [param]: searchParamsObj[param] });
         }
       });
     // Additionally, log a page view to Ninetailed.
