@@ -12,7 +12,7 @@
   "dependencies": {
     "@contentful/live-preview": "^4.5.13",
     "@contentful/rich-text-react-renderer": "^15.18.0",
-    "@ninetailed/experience.js-plugin-insights": "^7.9.0",
+    "@ninetailed/experience.js-plugin-insights": "^7.8.1",
     "@ninetailed/experience.js-plugin-preview": "^7.8.1",
     "@ninetailed/experience.js-react": "^7.8.1",
     "@ninetailed/experience.js-utils-contentful": "^7.8.1",
