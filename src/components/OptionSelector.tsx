@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useNinetailed, useProfile } from "@ninetailed/experience.js-react";
+import { useNinetailed } from "@ninetailed/experience.js-react";
 import { useContentfulLiveUpdates } from "@contentful/live-preview/react";
 import type {
   TypeComponentOptionSelector,
@@ -28,9 +28,6 @@ const OptionSelector: React.FC<TypeComponentOptionSelector> = (entry) => {
     setSelectedOption(option);
     // Update Ninetailed profile trait with selected option.
     identify("", { [cleanKey]: option });
-    // Additionally log this click as an event for further tracking.
-    console.log(`select-${cleanKey}`);
-    track(`select-${cleanKey}`, { [cleanKey]: option });
   };
 
   return (
