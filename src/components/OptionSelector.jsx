@@ -7,11 +7,8 @@ import { useContentfulLiveUpdates } from "@contentful/live-preview/react";
 const OptionSelector = (entry) => {
   // @see https://docs.ninetailed.io/for-developers/experience-sdk/sending-events
   const { track, identify } = useNinetailed();
-  const { profile } = useProfile();
   const [selectedOption, setSelectedOption] = useState(null);
   const { fields: liveUpdateFields } = useContentfulLiveUpdates(entry);
-
-  // console.log("PROFILE", profile);
 
   const handleSelectOption = (option) => {
     // Remove any non-printable characters (added by Live Preview Content Source Maps)
@@ -21,9 +18,6 @@ const OptionSelector = (entry) => {
     setSelectedOption(option);
     // Update Ninetailed profile trait with selected option.
     identify("", { [cleanKey]: option });
-    // Additionally log this click as an event for further tracking.
-    console.log(`select-${cleanKey}`);
-    track(`select-${cleanKey}`, { [cleanKey]: option });
   };
 
   return (
