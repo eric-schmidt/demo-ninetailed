@@ -20,6 +20,7 @@ export const CTA = (entry) => {
         className="inline-block font-bold mt-8 py-2 px-4 bg-blue-700 text-white rounded cursor-pointer"
         href={fields.linkDestination}
         onClick={handleClick}
+        target="_blank"
       >
         {fields.linkText}
       </a>
