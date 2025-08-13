@@ -24,11 +24,9 @@ export const ComponentResolver = ({ entry }) => {
     // @see https://docs.ninetailed.io/for-developers/experience-sdk/rendering-experiences
     <Experience
       id={entry.sys.id}
-      component={Component}
-      {...entry}
       experiences={experiences}
-      // TODO: Figure out why this isn't working and instead stays in a loading state.
-      // Could this be related to why we don't see personalized content showing up?
+      {...entry}
+      component={Component}
       loadingComponent={() => <div>Loading...</div>}
     />
   );
