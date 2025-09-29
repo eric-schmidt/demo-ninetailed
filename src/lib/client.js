@@ -21,7 +21,8 @@ const getClient = ({ preview = false }) => {
       host: domain,
       // Content Source Maps prevent the need for manually tagging components for
       // Live Preview Inspector Mode, but these are only available on the Preview API.
-      includeContentSourceMaps: preview,
+      // TODO: Figure out why enabling this causes Personalization preview plugin to stop working.
+      // includeContentSourceMaps: preview,
     });
   } catch (error) {
     console.error("Error initializing Contentful client:", error);
