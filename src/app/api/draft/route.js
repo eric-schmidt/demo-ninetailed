@@ -46,5 +46,10 @@ export const GET = async (request) => {
 
   // Redirect to the path from the fetched entry.
   // We don't redirect to searchParams.slug as that might lead to open redirect vulnerabilities
-  redirect(`/${entries[0].fields.slug}`);
+  const timeline = searchParams.get("timeline");
+  const targetSlug = entries[0].fields.slug;
+  const redirectUrl = timeline
+    ? `/${targetSlug}?timeline=${encodeURIComponent(timeline)}`
+    : `/${targetSlug}`;
+  redirect(redirectUrl);
 };
