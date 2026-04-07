@@ -26,6 +26,7 @@ const RootLayout = async ({ children }) => {
 
   const siteConfigEntry = await getEntryById({
     entryId: "1Q8WgkDuU4s45pyvrandn9",
+    preview: isEnabled,
   });
 
   return (

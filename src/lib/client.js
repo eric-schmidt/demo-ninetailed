@@ -48,8 +48,8 @@ export const getLinksToEntryById = async ({ entryId }) => {
 };
 
 // Get an individual entry from Contentful via its ID.
-export const getEntryById = async ({ entryId, includeDepth = 10 }) => {
-  const client = getClient({ preview: false });
+export const getEntryById = async ({ entryId, preview = false, includeDepth = 10 }) => {
+  const client = getClient({ preview });
 
   try {
     const response = await client.getEntries({
